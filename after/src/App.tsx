@@ -1,0 +1,49 @@
+import { useState } from "react";
+import { queryOptions, useQuery } from "@tanstack/react-query";
+import { indexedDbPersistedOptions } from "./persist-query-client";
+import { queryClient } from "./main";
+
+const timeQuery = queryOptions({
+  queryKey: ["time"],
+  queryFn: async () => {
+    console.log("fetching time");
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    return { time: new Date().toISOString() };
+  },
+  staleTime: 4000,
+  ...indexedDbPersistedOptions,
+});
+
+function App() {
+  const [renderQuery, setRenderQuery] = useState(true);
+
+  return (
+    <div>
+      <button onClick={() => queryClient.invalidateQueries(timeQuery)}>
+        invalidate
+      </button>
+
+      <div style={{ border: "1px solid black", padding: "8px" }}>
+        <h3>useQuery</h3>
+        <button onClick={() => setRenderQuery((s) => !s)}>
+          {renderQuery ? "hide" : "show"}
+        </button>
+        {renderQuery && <Query />}
+      </div>
+    </div>
+  );
+}
+
+function Query() {
+  const query = useQuery(timeQuery);
+
+  return (
+    <div>
+      <pre>{query.data ? JSON.stringify(query.data.time) : "loading..."}</pre>
+    </div>
+  );
+}
+
+export default App;
