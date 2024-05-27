@@ -45,10 +45,17 @@ export function broadcastQueryClient({
       });
     }
 
-    if (queryEvent.type === "removed") {
+    // if (queryEvent.type === "removed") {
+    //   channel.postMessage({
+    //     type: "removed",
+    //     queryHash,
+    //     queryKey,
+    //   });
+    // }
+
+    if ((queryEvent.type as string) === "invalidated") {
       channel.postMessage({
-        type: "removed",
-        queryHash,
+        type: "invalidated",
         queryKey,
       });
     }
@@ -65,25 +72,28 @@ export function broadcastQueryClient({
       if (type === "updated") {
         const query = queryCache.get(queryHash);
 
-        if (query) {
-          query.setState(state);
-          return;
-        }
+        if (query && query.observers.length > 0) {
+          if (query) {
+            query.setState(state);
+            return;
+          }
 
-        queryCache.build(
-          queryClient,
-          {
-            queryKey,
-            queryHash,
-          },
-          state
-        );
+          queryCache.build(
+            queryClient,
+            {
+              queryKey,
+              queryHash,
+            },
+            state
+          );
+        }
       } else if (type === "removed") {
-        const query = queryCache.get(queryHash);
-
-        if (query) {
-          queryCache.remove(query);
-        }
+        // const query = queryCache.get(queryHash);
+        // if (query) {
+        //   queryCache.remove(query);
+        // }
+      } else if (type == "invalidated") {
+        queryClient.invalidateQueries(queryKey);
       }
     });
   };
