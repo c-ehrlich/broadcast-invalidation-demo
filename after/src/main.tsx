@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { broadcastQueryClient } from "@tanstack/query-broadcast-client-experimental";
+import { broadcastQueryClient } from "./broadcast-query-client.ts";
 
 export const queryClient = new QueryClient();
 
