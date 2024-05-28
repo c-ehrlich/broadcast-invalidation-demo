@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import { indexedDbPersistedOptions } from "./persist-query-client";
 import { queryClient } from "./main";
 
 const timeQuery = queryOptions({
@@ -13,7 +12,6 @@ const timeQuery = queryOptions({
     return { time: new Date().toISOString() };
   },
   staleTime: 4000,
-  ...indexedDbPersistedOptions,
 });
 
 function App() {
