@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "install": "(cd before && pnpm install)",
+    "dev": "(cd before && pnpm dev)",
+    "install:after": "(cd after && pnpm install)",
+    "dev:after": "(cd after && pnpm dev)"
+  }
+}
