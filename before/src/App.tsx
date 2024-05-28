@@ -20,6 +20,7 @@ function App() {
 
   return (
     <div>
+      <h1>before</h1>
       <button onClick={() => queryClient.invalidateQueries(timeQuery)}>
         invalidate
       </button>

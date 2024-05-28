@@ -11,7 +11,8 @@ const timeQuery = queryOptions({
 
     return { time: new Date().toISOString() };
   },
-  staleTime: 4000,
+  staleTime: 1000,
+  gcTime: 3000,
 });
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <div>
+      <h1>after</h1>
       <button onClick={() => queryClient.invalidateQueries(timeQuery)}>
         invalidate
       </button>
